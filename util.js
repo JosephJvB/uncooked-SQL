@@ -1,20 +1,7 @@
-function onSuccess(db) {
-	console.log('on succ')
-	return function handleRes(result) {
-		db.$pool.end() // close DB ASAP rocky
-		console.log('yassss queen', result)
-	}
-}
-
-function onFailure(db) {
-	console.log('on fail')
-	return function handleError(error) {
-		console.log('yoikes', error)
+module.exports = function handleResult({db, type}) {
+// im abusing scope here - db visible throughout this function.
+	return function logResultAndClose(result) {
 		db.$pool.end()
+		console.log(type, ':', result)
 	}
-}
-
-module.exports = {
-	onFailure,
-	onSuccess,
 }
