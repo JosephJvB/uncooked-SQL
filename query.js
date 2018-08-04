@@ -1,8 +1,5 @@
 const pg = require('pg-promise')()
-const {
-	onFailure,
-	onSuccess,
-} = require('./util')
+const handleResult = require('./util')
 
 const DB = pg({
 	host: 'localhost',
@@ -15,7 +12,9 @@ const DB = pg({
 //console.log('D A T A B A S E', DB)
 //oneSmallStep()
 //oneGiantLeap()
-//shouldBeSleeping({ column: 'name', value: 'Petra' })
+//shouldBeSleeping({ column: 'name', value: 'Pratik' })
+//deleteByName('trev')
+//deleteById(3)
 
 /*
 	close DB conn: https://github.com/vitaly-t/pg-promise#library-de-initialization
@@ -32,14 +31,15 @@ const DB = pg({
 
 function oneSmallStep() {
 	DB.one('select 1 + 1 as answer')
-	.then(onSuccess(DB))
-	.catch(onFailure(DB)) // this function gets called even though it's in the catch block??
+	.then(handleResult({db: DB, type: 'SUCCESS'}))
+	.catch(handleResult({db: DB, type: 'FAILURE'})) // this function gets called even though it's in the catch block??
 /*
 	I wanted to be fancy and curry some functions, 
 	call function with db connection,
 	that function returns aother function that will deal with .then -> res or .catch -> err
 	except both functions get called initially...
 	I would have thought hiding them in .then() .catch() meant they wouldnt get called tbh
+	I guess they still get evaluated
 */
 }
 
@@ -66,7 +66,7 @@ function shouldBeSleeping({column, value}) {
 */
 	DB.one({
 		name: 'create-bird',
-		text: `insert into "Birds"(${column}) values('${value}') returning ${column}`,
+		text: `insert into "Birds"(${column}) values('${value}') returning *`,
 	})
 	.then((res) => {
 		DB.$pool.end()
@@ -76,4 +76,29 @@ function shouldBeSleeping({column, value}) {
 		DB.$pool.end()
 		console.log('YIKES:', err)
 	})
+}
+
+function deleteByName(birdName) {
+	DB.one(`delete from "Birds" where "name" ~ '${birdName}' returning *`)
+	.then(handleResult({db: DB, type: 'DELETED'}))
+	.catch(handleResult({db: DB, type: 'DELETE ERROR'}))
+}
+
+/*
+	different functions for different syntax:
+	'column ~ value' = is-like. Doesnt work for id as an integer
+	'column = value' = is exactly. I like the idea of not having to match on exact strings
+
+	COULD have one delete function that switches on type of input:
+	if(string) use ~
+	if(number) use =
+	...dunno if i like that tho
+
+	problem: these queries don't handle multiple deletes
+*/
+
+function deleteById(birdId) {
+	DB.one(`delete from "Birds" where id = ${birdId} returning *`)
+	.then(handleResult({db: DB, type: 'DELETED'}))
+	.catch(handleResult({db: DB, type: 'DELETE ERROR'}))
 }
