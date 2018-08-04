@@ -13,7 +13,7 @@ const DB = pg({
 })
 
 //console.log('D A T A B A S E', DB)
-oneSmallStep()
+//oneSmallStep()
 //oneGiantLeap()
 //shouldBeSleeping({ column: 'name', value: 'Petra' })
 
@@ -44,7 +44,11 @@ function oneSmallStep() {
 }
 
 function oneGiantLeap() {
-	DB.one('insert into "Birds"(name) values(\'westren petrel\') returning name')
+	/*
+		use backticks to wrap statement string so I can use both "" and '' in the SQL statement 😘
+		otherwise I have to use gross escape characters = 'statement + \'stringVALUE\'' === yuck
+	*/
+	DB.one(`insert into "Birds"(name) values('westren petrel') returning name`)
 	.then((res) => {
 		console.log(res, 'noice')
 		DB.$pool.end()		
@@ -56,6 +60,10 @@ function oneGiantLeap() {
 }
 
 function shouldBeSleeping({column, value}) {
+/* 
+	this syntax is called a prepared statement:
+	aparently its best used around v complex queries - so defintely doesnt make sense here
+*/
 	DB.one({
 		name: 'create-bird',
 		text: `insert into "Birds"(${column}) values('${value}') returning ${column}`,
