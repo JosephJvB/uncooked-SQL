@@ -34,20 +34,20 @@ function oneSmallStep() {
 	DB.one('select 1 + 1 as answer')
 	.then(onSuccess(DB))
 	.catch(onFailure(DB)) // this function gets called even though it's in the catch block??
-	/*
-		I wanted to be fancy and curry some functions, 
-		call function with db connection,
-		that function returns aother function that will deal with .then -> res or .catch -> err
-		except both functions get called initially...
-		I would have thought hiding them in .then() .catch() meant they wouldnt get called tbh
-	*/
+/*
+	I wanted to be fancy and curry some functions, 
+	call function with db connection,
+	that function returns aother function that will deal with .then -> res or .catch -> err
+	except both functions get called initially...
+	I would have thought hiding them in .then() .catch() meant they wouldnt get called tbh
+*/
 }
 
 function oneGiantLeap() {
-	/*
-		use backticks to wrap statement string so I can use both "" and '' in the SQL statement 😘
-		otherwise I have to use gross escape characters = 'statement + \'stringVALUE\'' === yuck
-	*/
+/*
+	use backticks to wrap statement string so I can use both "" and '' in the SQL statement 😘
+	otherwise I have to use gross escape characters = 'statement + \'stringVALUE\'' === yuck
+*/
 	DB.one(`insert into "Birds"(name) values('westren petrel') returning name`)
 	.then((res) => {
 		console.log(res, 'noice')
