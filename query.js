@@ -9,6 +9,8 @@ const DB = pg({
 })
 
 //console.log('D A T A B A S E', DB)
+//oneSmallStep()
+oneGiantLeap()
 
 /*
 	close DB conn: https://github.com/vitaly-t/pg-promise#library-de-initialization
@@ -23,9 +25,26 @@ const DB = pg({
 	.catch(res => console.log(res))
 */
 
-DB.one('select 1 + 1 as answer')
-.then(res => {
-	console.log(res.answer, DB.$pool)
-	DB.$pool.end() // OH IT WORKS HERE
-})
-.catch(err => console.log('HELL NAW', err))
+function oneSmallStep() {
+	DB.one('select 1 + 1 as answer')
+	.then((res) => {
+		console.log(res.answer, DB.$pool)
+		DB.$pool.end() // OH IT WORKS HERE
+	})
+	.catch((err) => {
+		console.log('HELL NAW', err)
+		DB.$pool.end()
+	})
+}
+
+function oneGiantLeap() {
+	DB.one('insert into "Birds"(name) values(\'tracy\')')
+	.then((res) => {
+		console.log(res, 'noice')
+		DB.$pool.end()		
+	})
+	.catch((err) => {
+		console.log('GOOD GRACIOUS', err)
+		DB.$pool.end()
+	})
+}
