@@ -1,4 +1,8 @@
 const pg = require('pg-promise')()
+const {
+	onFailure,
+	onSuccess,
+} = require('./util')
 
 const DB = pg({
 	host: 'localhost',
@@ -9,12 +13,9 @@ const DB = pg({
 })
 
 //console.log('D A T A B A S E', DB)
-//oneSmallStep()
+oneSmallStep()
 //oneGiantLeap()
-shouldBeSleeping({
-	column: 'name',
-	value: 'Petra'
-})
+//shouldBeSleeping({ column: 'name', value: 'Petra' })
 
 /*
 	close DB conn: https://github.com/vitaly-t/pg-promise#library-de-initialization
@@ -31,14 +32,15 @@ shouldBeSleeping({
 
 function oneSmallStep() {
 	DB.one('select 1 + 1 as answer')
-	.then((res) => {
-		console.log(res.answer, DB.$pool)
-		DB.$pool.end() // OH IT WORKS HERE
-	})
-	.catch((err) => {
-		console.log('HELL NAW', err)
-		DB.$pool.end()
-	})
+	.then(onSuccess(DB))
+	.catch(onFailure(DB)) // this function gets called even though it's in the catch block??
+	/*
+		I wanted to be fancy and curry some functions, 
+		call function with db connection,
+		that function returns aother function that will deal with .then -> res or .catch -> err
+		except both functions get called initially...
+		I would have thought hiding them in .then() .catch() meant they wouldnt get called tbh
+	*/
 }
 
 function oneGiantLeap() {
