@@ -9,15 +9,28 @@ const testComponent = (props) => h('div', {}, [
 	])
 ])
 
+// i just added functions returning functions till it worked
 const addButtsToProps = () => (component) => (componentProps) => {
 	const buttProps = Object.assign({}, {buttProp: 'butt'}, componentProps)
 	return h(component, buttProps)
 }
 
+/*
+	function addButts () {
+		return function takeComponent(Comp) {
+			return function takeCompProps(compProps) {
+				return <Comp {...compProps} />
+			}
+		}
+	}
+*/
+
 const ReactRoot = addButtsToProps()(testComponent)
+// addButtsToProps gets called twice which returns a function ready to take props
 
 document.addEventListener('DOMContentLoaded', () => {
 	render(
+	//by the time ReactRoot is here, addButts has already been called twice and is ready to take on props
 		h(ReactRoot, {first: 'success'}),
 		document.getElementById('here')
 	)	
