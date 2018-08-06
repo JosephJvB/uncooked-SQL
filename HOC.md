@@ -25,6 +25,8 @@ Connect:
 		}
 	}
 ```
+BOOM: I was right, mapStateToProps does get state and props:
+![ezpz](https://i.imgur.com/HO86jwv.png)
 
 Provider:
 ```js
@@ -45,5 +47,6 @@ Found this on how you might look at state, from here: https://stackoverflow.com/
 ![howToGetState](http://oi67.tinypic.com/125mc7p.jpg)
 Another:
 ![another1](http://oi64.tinypic.com/5yrno1.jpg)
+https://github.com/reduxjs/react-redux/issues/108#issuecomment-140778557
 
 ...aaaand Im reading the react-redux source code, this has been a helluva ride I'm loving it
