@@ -40,3 +40,10 @@ function Provider(props) {
 	})
 	return [...childrenWithStore]
 }
+```
+Found this on how you might look at state, from here: https://stackoverflow.com/questions/38986366/accessing-redux-store-inside-functions
+![howToGetState](http://oi67.tinypic.com/125mc7p.jpg)
+Another:
+![another1](http://oi64.tinypic.com/5yrno1.jpg)
+
+...aaaand Im reading the react-redux source code, this has been a helluva ride I'm loving it
