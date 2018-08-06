@@ -40,12 +40,9 @@ const addButtsToProps = (component) => (componentProps) => {
 */
 
 const ReactRoot = addButtsToProps(testComponent)
-// addButtsToProps gets called twice which returns a function ready to take props: testComponent
 
 document.addEventListener('DOMContentLoaded', () => {
 	render(
-	//by the time ReactRoot is here, addButts has already been called twice and is ready to take on props
-	//aka it is testComponent w/ buttProps
 		h(ReactRoot, {first: 'success'}),
 		document.getElementById('here')
 	)	
