@@ -1,9 +1,6 @@
-# SUP
-
-Wanted to do something code-y this evening. I have a new keyboard to play around on.
-
-RAW SQL queries from a JS web-server was the idea.
-So I found [PG-PROMISE](https://github.com/vitaly-t/pg-promise)
+# Joe tries:
+- SQL-in-js using pg-promise library
+- Learning HOC's, injecting props into react components
 
 Oh and Im doing it all from a terminal-editor called Micro for the sake of trying new things.
 ![Micro](http://oi67.tinypic.com/156z69e.jpg)
