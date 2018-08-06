@@ -4,12 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "parcel index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "pg-promise": "^8.4.5"
+    "pg-promise": "^8.4.5",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-hyperscript": "^3.2.0"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.9.7"
   }
 }
