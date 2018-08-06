@@ -3,14 +3,26 @@ const h = require('react-hyperscript')
 
 document.addEventListener('DOMContentLoaded', () => {
 	render(
-		h(Client),
+		enhancer({
+			component: Client,
+			nextProps: {
+				test: 'success'
+			}
+		}),
 		document.getElementById('here')
 	)	
 })
 
-const Client = () => h('div', {}, [
+const Client = (props) => h('div', {}, [
 	h('h1', {}, 'Coming to you live'),
+	h('h3', {}, 'PROPS: '),
 	h('ul', {}, [
-		props && Object.keys(props).map(prop => h('li', {}, prop))
+		props && Object.keys(props).map(prop => h('li', {key: prop}, prop + ': ' + props[prop]))
 	])
 ])
+
+const enhancer = ({component, nextProps}) => {
+// I want to use spread-operator here but i dont have es6 polyfills feelsbadman
+	const enhancedProps = Object.assign({}, component.props, nextProps)
+	return h(component, enhancedProps)
+}
