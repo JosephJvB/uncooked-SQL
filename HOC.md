@@ -6,7 +6,7 @@
 - feeling sketchy about how connect gets to the store (aka: how the Provider component operates)
 
 I guess what Redux's connect does is it passes the combined reducer into your mapStateToProps callback
-- actually it must get passed the store from the <Provider store={store} />
+- actually it must get passed the store from the `<Provider store={store} />`
 - yikes, hadn't thought about how that part worked..
 
 Connect:
