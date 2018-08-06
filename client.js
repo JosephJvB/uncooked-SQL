@@ -16,10 +16,16 @@ const addButtsToProps = () => (component) => (componentProps) => {
 }
 
 /*
-	function addButts () {
+	Might make it easier to see what's happening like this:
+
+	function enhance () {
 		return function takeComponent(Comp) {
 			return function takeCompProps(compProps) {
-				return <Comp {...compProps} />
+				const enhancedProps = {
+					...compProps,
+					...enhancements
+				}
+				return <Comp enhancedProps/>
 			}
 		}
 	}
