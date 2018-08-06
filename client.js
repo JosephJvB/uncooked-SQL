@@ -9,12 +9,12 @@ const testComponent = (props) => h('div', {}, [
 	])
 ])
 
-const addButtsToProps = (componentProps) => (component) => {
+const addButtsToProps = () => (component) => (componentProps) => {
 	const buttProps = Object.assign({}, {buttProp: 'butt'}, componentProps)
 	return h(component, buttProps)
 }
 
-const ReactRoot = (firstProps) => addButtsToProps(firstProps)(testComponent)
+const ReactRoot = addButtsToProps()(testComponent)
 
 document.addEventListener('DOMContentLoaded', () => {
 	render(
