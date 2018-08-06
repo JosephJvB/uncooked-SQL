@@ -4,8 +4,8 @@ const h = require('react-hyperscript')
 const testComponent = (props) => h('div', {}, [
 	h('h1', {}, 'Coming to you live'),
 	h('h3', {}, 'PROPS: '),
-	h('ul', {}, [
-		props && Object.keys(props).map(prop => h('li', { key: prop }, prop + ': ' + props[prop]))
+	props && h('ul', {}, [
+		Object.keys(props).map(propKey => h('li', { key: propKey }, propKey + ': ' + props[propKey]))
 	])
 ])
 
@@ -18,9 +18,9 @@ const addButtsToProps = () => (component) => (componentProps) => {
 /*
 	Might make it easier to see what's happening like this:
 
-	function enhance () {
+	function enhance() {
 		return function takeComponent(Comp) {
-			return function takeCompProps(compProps) {
+			return function renderCompWithNewProps(compProps) {
 				const enhancedProps = {
 					...compProps,
 					...enhancements
@@ -32,11 +32,12 @@ const addButtsToProps = () => (component) => (componentProps) => {
 */
 
 const ReactRoot = addButtsToProps()(testComponent)
-// addButtsToProps gets called twice which returns a function ready to take props
+// addButtsToProps gets called twice which returns a function ready to take props: testComponent
 
 document.addEventListener('DOMContentLoaded', () => {
 	render(
 	//by the time ReactRoot is here, addButts has already been called twice and is ready to take on props
+	//aka it is testComponent w/ buttProps
 		h(ReactRoot, {first: 'success'}),
 		document.getElementById('here')
 	)	
