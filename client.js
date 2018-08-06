@@ -10,14 +10,14 @@ const testComponent = (props) => h('div', {}, [
 ])
 
 // Joe's fake react-redux connect()
-const addButtsToProps = (mapper) => (component) => (componentProps) => {
+const enhancer = (mapper) => (component) => (componentProps) => {
 	const fakeState = {
 		pants: ['shorts', 'skirt', 'long-jacket'],
-		warmButt: true,
+		favSong: 'ra ra rasputin'
 	} // dunno how connect() gets access to state irl. Some magic with Provider and Store. To be discovered
-	const buttProps = mapper(fakeState) // return bits of state that component asks for
-	const nextProps = Object.assign({}, buttProps, componentProps)
-	return h(component, nextProps)
+	const propsFromState = mapper(fakeState) // return bits of state that component asks for
+	const enhancedProps = Object.assign({}, propsFromState, componentProps)
+	return h(component, enhancedProps)
 }
 
 /*
@@ -35,11 +35,9 @@ const addButtsToProps = (mapper) => (component) => (componentProps) => {
 	}
 */
 
-const mapPantsToButts = (state) => ({
-	butts: pants
-})
+const mapPantsToProps = (state) => ({ pants: state.pants })
 
-const ReactRoot = addButtsToProps(mapPantsToButts)(testComponent)
+const ReactRoot = enhancer(mapPantsToProps)(testComponent)
 
 document.addEventListener('DOMContentLoaded', () => {
 	render(
