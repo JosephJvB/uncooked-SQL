@@ -9,16 +9,16 @@ const testComponent = (props) => h('div', {}, [
 	])
 ])
 
-const enhancer = (firstProps) => (component) => {
-	const enhancedProps = Object.assign({}, firstProps, component.props)
-	return h(component, enhancedProps)
+const addButtsToProps = (componentProps) => (component) => {
+	const buttProps = Object.assign({}, {buttProp: 'butt'}, componentProps)
+	return h(component, buttProps)
 }
 
-const ReactRoot = enhancer({first: 'success'})(testComponent)
+const ReactRoot = (firstProps) => addButtsToProps(firstProps)(testComponent)
 
 document.addEventListener('DOMContentLoaded', () => {
 	render(
-		h(ReactRoot, {second: 'success'}),
+		h(ReactRoot, {first: 'success'}),
 		document.getElementById('here')
 	)	
 })
