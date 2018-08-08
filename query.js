@@ -1,5 +1,6 @@
 const pg = require('pg-promise')()
 const handleResult = require('./util')
+// TODO: change the way this util function works: All those live function calls as the file is read the first time is not a good pattern
 
 const DB = pg({
 	host: 'localhost',
@@ -111,7 +112,6 @@ function createNewTable({table, rows}) {
 	for(let i = 0; i < rows.length; i++) {
 		sqlRows += i + 1 < rows.length ? rows[i] + ',' : rows[i]
 	}
-	console.log('ROWS TO ADD', `(${sqlRows})`)
 	DB.one(`create table "${table}" (${sqlRows})`)
 	.then(handleResult({db: DB, type: 'CREATED'}))
 	.catch(handleResult({db: DB, type: 'CREATE_TABLE ERROR'}))

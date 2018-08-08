@@ -5,3 +5,15 @@ module.exports = function handleResult({db, type}) {
 		console.log(type, ':', result)
 	}
 }
+
+/*
+	***in query.js***	
+	db.one('do sql')
+	.then(res => util({DB, type: 'SOME_TYPE', result: res}))
+	.catch(err => util({DB, type: 'ERROR', result: err}))
+*/
+
+function betterUtil({DB, type, result}) {
+	db.$pool.end()
+	return console.log(type + ':', result)
+}
