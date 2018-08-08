@@ -15,6 +15,9 @@ const DB = pg({
 //shouldBeSleeping({ column: 'name', value: 'Pratik' })
 //deleteByName('trev')
 //deleteById(3)
+//createNewTable({ table: 'dining_table', rows: ['"id" integer', '"seats" integer', '"guestNames" char(255)'] })
+//droppem('coffee_table')
+//alterMe({ table: 'coffee_table', rows: ['"id" integer'] })
 
 /*
 	close DB conn: https://github.com/vitaly-t/pg-promise#library-de-initialization
@@ -101,4 +104,31 @@ function deleteById(birdId) {
 	DB.one(`delete from "Birds" where id = ${birdId} returning *`)
 	.then(handleResult({db: DB, type: 'DELETED'}))
 	.catch(handleResult({db: DB, type: 'DELETE ERROR'}))
+}
+
+function createNewTable({table, rows}) {
+	let sqlRows = ''
+	for(let i = 0; i < rows.length; i++) {
+		sqlRows += i + 1 < rows.length ? rows[i] + ',' : rows[i]
+	}
+	console.log('ROWS TO ADD', `(${sqlRows})`)
+	DB.one(`create table "${table}" (${sqlRows})`)
+	.then(handleResult({db: DB, type: 'CREATED'}))
+	.catch(handleResult({db: DB, type: 'CREATE_TABLE ERROR'}))
+}
+
+function droppem(tableName) {
+	DB.one(`drop table "${tableName}"`)
+	.then(handleResult({db: DB, type: 'DROPPED'}))
+	.catch(handleResult({db: DB, type: 'DROP_TABLE ERROR'}))
+}
+
+function alterMe({table, rows}) {
+	let sqlRows = ''
+	for(let i = 0; i < rows.length; i++) {
+		sqlRows += i + 1 < rows.length ? rows[i] + ',' : rows[i]
+	}
+	DB.one(`alter table "${table}" add (${sqlRows})`)
+	.then(handleResult({db: DB, type: 'ALTERED'}))
+	.catch(handleResult({db: DB, type: 'ALTER ERROR'}))
 }
